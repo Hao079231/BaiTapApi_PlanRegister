@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import vn.itz.plansync.dto.ApiMessageDto;
 import vn.itz.plansync.dto.LecturerSchedulerDto;
 import vn.itz.plansync.dto.ShowPagedResults;
-import vn.itz.plansync.form.LecturerSchedulerForm;
+import vn.itz.plansync.form.lecturerScheduler.LecturerSchedulerCreateForm;
+import vn.itz.plansync.form.lecturerScheduler.LecturerSchedulerUpdateForm;
 import vn.itz.plansync.model.criteria.LecturerSchedulerCriteria;
 import vn.itz.plansync.service.LecturerSchedulerService;
 import vn.itz.plansync.utils.ApiMessageUtils;
@@ -43,7 +44,7 @@ public class LecturerSchedulerController {
 
   @PostMapping("/create")
   public ResponseEntity<ApiMessageDto<LecturerSchedulerDto>> createLecturerScheduler(@RequestBody
-      LecturerSchedulerForm request){
+  LecturerSchedulerCreateForm request){
     ApiMessageDto<LecturerSchedulerDto> response = ApiMessageUtils.results("Dang ky thanh cong",
         lecturerSchedulerService.createLecturerScheduler(request));
     return ResponseEntity.ok(response);
@@ -51,7 +52,7 @@ public class LecturerSchedulerController {
 
   @PutMapping("/{id}/update")
   public ResponseEntity<ApiMessageDto<LecturerSchedulerDto>> updateLecturerScheduler(@PathVariable Long id,
-      @RequestBody LecturerSchedulerForm request) {
+      @RequestBody LecturerSchedulerUpdateForm request) {
     ApiMessageDto<LecturerSchedulerDto> response = ApiMessageUtils.results("Cap nhat thanh cong",
         lecturerSchedulerService.updateLecturerScheduler(id, request));
     return ResponseEntity.ok(response);

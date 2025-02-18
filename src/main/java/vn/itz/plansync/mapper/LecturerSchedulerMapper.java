@@ -8,7 +8,8 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import vn.itz.plansync.dto.LecturerSchedulerDto;
-import vn.itz.plansync.form.LecturerSchedulerForm;
+import vn.itz.plansync.form.lecturerScheduler.LecturerSchedulerCreateForm;
+import vn.itz.plansync.form.lecturerScheduler.LecturerSchedulerUpdateForm;
 import vn.itz.plansync.model.LecturerScheduler;
 
 @Mapper(componentModel = "spring")
@@ -20,7 +21,7 @@ public interface LecturerSchedulerMapper {
       @Mapping(source = "periodId", target = "period.id")
   })
   @Named("mapToLecturerScheduler")
-  LecturerScheduler converToLecturerScheduler(LecturerSchedulerForm request);
+  LecturerScheduler converToLecturerScheduler(LecturerSchedulerCreateForm request);
 
   @Mappings({
       @Mapping(source = "id", target = "lecturerSchedulerId"),
@@ -38,5 +39,5 @@ public interface LecturerSchedulerMapper {
       @Mapping(source = "lecturerIdValue", target = "lecturerId"),
       @Mapping(source = "courseIdValue", target = "courseId")
   })
-  void updateLecturerScheduler(@MappingTarget LecturerScheduler lecturerScheduler, LecturerSchedulerForm request);
+  void updateLecturerScheduler(@MappingTarget LecturerScheduler lecturerScheduler, LecturerSchedulerUpdateForm request);
 }

@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 import vn.itz.plansync.dto.PeriodDto;
 import vn.itz.plansync.dto.ShowPagedResults;
 import vn.itz.plansync.exception.ResourceNotFound;
-import vn.itz.plansync.form.PeriodForm;
+import vn.itz.plansync.form.period.PeriodCreateForm;
+import vn.itz.plansync.form.period.PeriodUpdateForm;
 import vn.itz.plansync.mapper.PeriodMapper;
 import vn.itz.plansync.model.Period;
 import vn.itz.plansync.model.criteria.PeriodCriteria;
@@ -32,7 +33,7 @@ public class PeriodService {
   }
 
   @Transactional
-  public PeriodDto createPeriod(PeriodForm request) {
+  public PeriodDto createPeriod(PeriodCreateForm request) {
     if (!request.getPeriodDueDate().isAfter(request.getPeriodStartDate())) {
       throw new IllegalArgumentException(
           "Ngay ket thuc hoc ky phai la ngay sau ngay bat dau hoc ky");
@@ -56,7 +57,7 @@ public class PeriodService {
   }
 
   @Transactional
-  public PeriodDto updatePeriod(Long id, PeriodForm request) {
+  public PeriodDto updatePeriod(Long id, PeriodUpdateForm request) {
     Period period = periodRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFound("Hoc ky khong ton tai"));
 

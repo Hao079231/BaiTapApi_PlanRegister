@@ -7,10 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.itz.plansync.dto.LecturerSchedulerDto;
-import vn.itz.plansync.dto.PeriodDto;
 import vn.itz.plansync.dto.ShowPagedResults;
 import vn.itz.plansync.exception.ResourceNotFound;
-import vn.itz.plansync.form.LecturerSchedulerForm;
+import vn.itz.plansync.form.lecturerScheduler.LecturerSchedulerCreateForm;
+import vn.itz.plansync.form.lecturerScheduler.LecturerSchedulerUpdateForm;
 import vn.itz.plansync.mapper.LecturerSchedulerMapper;
 import vn.itz.plansync.model.LecturerScheduler;
 import vn.itz.plansync.model.Period;
@@ -41,7 +41,7 @@ public class LecturerSchedulerService {
   }
 
   @Transactional
-  public LecturerSchedulerDto createLecturerScheduler(LecturerSchedulerForm request){
+  public LecturerSchedulerDto createLecturerScheduler(LecturerSchedulerCreateForm request){
     Period period = periodRepository.findById(request.getPeriodId()).orElseThrow(()
     -> new ResourceNotFound("Khong tim thay hoc ky da chon"));
     LecturerScheduler lecturerScheduler = lecturerSchedulerMapper.converToLecturerScheduler(request);
@@ -49,7 +49,7 @@ public class LecturerSchedulerService {
   }
 
   @Transactional
-  public LecturerSchedulerDto updateLecturerScheduler(Long id, LecturerSchedulerForm request){
+  public LecturerSchedulerDto updateLecturerScheduler(Long id, LecturerSchedulerUpdateForm request){
     LecturerScheduler lecturerScheduler = lecturerSchedulerRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFound("Khong tim thay lich trinh voi ID: " + id));
     lecturerSchedulerMapper.updateLecturerScheduler(lecturerScheduler, request);

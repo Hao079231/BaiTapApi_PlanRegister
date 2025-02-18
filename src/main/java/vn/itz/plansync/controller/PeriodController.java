@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import vn.itz.plansync.dto.ApiMessageDto;
 import vn.itz.plansync.dto.PeriodDto;
 import vn.itz.plansync.dto.ShowPagedResults;
-import vn.itz.plansync.form.PeriodForm;
+import vn.itz.plansync.form.period.PeriodCreateForm;
+import vn.itz.plansync.form.period.PeriodUpdateForm;
 import vn.itz.plansync.model.criteria.PeriodCriteria;
 import vn.itz.plansync.service.PeriodService;
 import vn.itz.plansync.utils.ApiMessageUtils;
@@ -43,7 +44,7 @@ public class PeriodController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity<ApiMessageDto<PeriodDto>> createPeriod(@RequestBody PeriodForm request){
+  public ResponseEntity<ApiMessageDto<PeriodDto>> createPeriod(@RequestBody PeriodCreateForm request){
     ApiMessageDto<PeriodDto> response = ApiMessageUtils.results("Tao ki hoc moi thanh cong",
         periodService.createPeriod(request));
     return ResponseEntity.ok(response);
@@ -51,7 +52,7 @@ public class PeriodController {
 
   @PutMapping("/{id}/update")
   public ResponseEntity<ApiMessageDto<PeriodDto>> updatePeriod(@PathVariable Long id,
-      @RequestBody PeriodForm request) {
+      @RequestBody PeriodUpdateForm request) {
     ApiMessageDto<PeriodDto> response = ApiMessageUtils.results("Cap nhat ki hoc thanh cong",
         periodService.updatePeriod(id, request));
     return ResponseEntity.ok(response);
