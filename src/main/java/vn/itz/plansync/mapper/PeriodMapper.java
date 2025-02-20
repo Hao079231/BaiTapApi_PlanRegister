@@ -8,7 +8,8 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import vn.itz.plansync.dto.PeriodDto;
-import vn.itz.plansync.form.PeriodForm;
+import vn.itz.plansync.form.period.PeriodCreateForm;
+import vn.itz.plansync.form.period.PeriodUpdateForm;
 import vn.itz.plansync.model.Period;
 
 @Mapper(componentModel = "spring")
@@ -21,7 +22,7 @@ public interface PeriodMapper {
       @Mapping(source = "periodState", target = "state")
   })
   @Named("mapToPeriod")
-  Period convertToPeriod(PeriodForm request);
+  Period convertToPeriod(PeriodCreateForm request);
 
   @Mappings({
       @Mapping(source = "id", target = "periodId"),
@@ -44,5 +45,5 @@ public interface PeriodMapper {
       @Mapping(source = "periodDueDate", target = "dueDate"),
       @Mapping(source = "periodState", target = "state")
   })
-  void updatePeriod(@MappingTarget Period period, PeriodForm request);
+  void updatePeriod(@MappingTarget Period period, PeriodUpdateForm request);
 }
