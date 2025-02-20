@@ -26,6 +26,9 @@ public class PeriodService {
   @Autowired
   private PeriodMapper periodMapper;
 
+  @Autowired
+  private JwtService jwtService;
+
   public PeriodDto getPeriodById(Long id) {
     Period period = periodRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFound("Hoc ky khong ton tai"));
@@ -79,7 +82,16 @@ public class PeriodService {
   }
 
   // Loc va phan trang lay danh sach hoc ky
-  public ShowPagedResults<PeriodDto> getFilteredPeriods(PeriodCriteria request, Pageable pageable) {
+  public ShowPagedResults<PeriodDto> getFilteredPeriods(PeriodCriteria request, Pageable pageable, String token) {
+    // Kiem tra token co duoc cung cap khong
+    if (token == null || !token.startsWith("Bearer ")) {
+      throw new ResourceNotFound("Token khong hop le hoac khong duoc cung cap");
+    }
+    token = token.substring(7);
+    if (!jwtService.isValid(token)) {
+      throw new ResourceNotFound("Token khong hop le hoac da het han!");
+    }
+
     Page<Period> periods = periodRepository.findAll(request.getCriteria(), pageable);
     List<PeriodDto> periodDtos = periodMapper.convertToListPeriodDto(periods.getContent());
     return new ShowPagedResults<>(periodDtos, periods.getTotalElements(), periods.getTotalPages());

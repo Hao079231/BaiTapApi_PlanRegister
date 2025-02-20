@@ -3,12 +3,14 @@ package vn.itz.plansync.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vn.itz.plansync.dto.ApiMessageDto;
@@ -29,10 +31,10 @@ public class PeriodController {
 
   @GetMapping("/list")
   public ResponseEntity<ApiMessageDto<ShowPagedResults<PeriodDto>>> getPagedPeriods(
-      PeriodCriteria request, Pageable pageable
+      PeriodCriteria request, Pageable pageable, @RequestHeader("Authorization") String token
   ){
     ApiMessageDto<ShowPagedResults<PeriodDto>> response = ApiMessageUtils.results("Danh sach cac hoc ky",
-        periodService.getFilteredPeriods(request, pageable));
+        periodService.getFilteredPeriods(request, pageable, token));
     return ResponseEntity.ok(response);
   }
 
