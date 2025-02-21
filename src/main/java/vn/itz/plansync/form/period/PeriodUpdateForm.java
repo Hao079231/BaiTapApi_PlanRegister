@@ -14,6 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PeriodUpdateForm {
+  @ApiModelProperty(value = "Id hoc ky", example = "1", required = true)
+  @NotNull(message = "Id cua hoc ky khong the trong")
+  private Long periodId;
+
   @ApiModelProperty(value = "Ten hoc ki", example = "Hoc ki I", required = true)
   @NotEmpty(message = "Ten ki khong the trong")
   private String periodName;

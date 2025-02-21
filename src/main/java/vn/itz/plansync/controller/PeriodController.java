@@ -30,15 +30,17 @@ public class PeriodController {
   private PeriodService periodService;
 
   @GetMapping("/list")
+  @PreAuthorize("hasAuthority('C_GET')")
   public ResponseEntity<ApiMessageDto<ShowPagedResults<PeriodDto>>> getPagedPeriods(
-      PeriodCriteria request, Pageable pageable, @RequestHeader("Authorization") String token
+      PeriodCriteria request, Pageable pageable
   ){
     ApiMessageDto<ShowPagedResults<PeriodDto>> response = ApiMessageUtils.results("Danh sach cac hoc ky",
-        periodService.getFilteredPeriods(request, pageable, token));
+        periodService.getFilteredPeriods(request, pageable));
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("/{id}")
+  @GetMapping("/get/{id}")
+  @PreAuthorize("hasAuthority('C_GET')")
   public ResponseEntity<ApiMessageDto<PeriodDto>> getPeriodById(@PathVariable Long id) {
     ApiMessageDto<PeriodDto> response = ApiMessageUtils.results("Thong tin hoc ky",
         periodService.getPeriodById(id));
@@ -46,21 +48,24 @@ public class PeriodController {
   }
 
   @PostMapping("/create")
+  @PreAuthorize("hasAuthority('C_CREATE')")
   public ResponseEntity<ApiMessageDto<PeriodDto>> createPeriod(@RequestBody PeriodCreateForm request){
     ApiMessageDto<PeriodDto> response = ApiMessageUtils.results("Tao hoc ky moi thanh cong",
         periodService.createPeriod(request));
     return ResponseEntity.ok(response);
   }
 
-  @PutMapping("/{id}/update")
-  public ResponseEntity<ApiMessageDto<PeriodDto>> updatePeriod(@PathVariable Long id,
+  @PutMapping("/update")
+  @PreAuthorize("hasAuthority('C_UPDATE')")
+  public ResponseEntity<ApiMessageDto<PeriodDto>> updatePeriod(
       @RequestBody PeriodUpdateForm request) {
     ApiMessageDto<PeriodDto> response = ApiMessageUtils.results("Cap nhat hoc ky thanh cong",
-        periodService.updatePeriod(id, request));
+        periodService.updatePeriod(request));
     return ResponseEntity.ok(response);
   }
 
-  @DeleteMapping("/{id}/delete")
+  @DeleteMapping("/delete/{id}")
+  @PreAuthorize("hasAuthority('C_DELETE')")
   public ResponseEntity<ApiMessageDto<String>> deletePeriod(@PathVariable Long id) {
     periodService.deletePeriod(id);
     ApiMessageDto<String> response = ApiMessageUtils.results("Xoa hoc ky thanh cong", null);

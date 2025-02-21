@@ -3,6 +3,7 @@ package vn.itz.plansync.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class LecturerSchedulerController {
   private LecturerSchedulerService lecturerSchedulerService;
 
   @GetMapping("/list")
+  @PreAuthorize("hasAuthority('C_GET')")
   public ResponseEntity<ApiMessageDto<ShowPagedResults<LecturerSchedulerDto>>> getAllLecturerScheduler(
       LecturerSchedulerCriteria request, Pageable pageable){
     ApiMessageDto<ShowPagedResults<LecturerSchedulerDto>> response = ApiMessageUtils.results("Danh sach dang ky mon hoc trong ky",
@@ -35,7 +37,8 @@ public class LecturerSchedulerController {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("/{id}")
+  @GetMapping("/get/{id}")
+  @PreAuthorize("hasAuthority('C_GET')")
   public ResponseEntity<ApiMessageDto<LecturerSchedulerDto>> getLecturerSchedulerById(@PathVariable Long id) {
     ApiMessageDto<LecturerSchedulerDto> response = ApiMessageUtils.results("Thong tin lich trinh cua giang vien",
         lecturerSchedulerService.getLecturerSchedulerById(id));
@@ -43,6 +46,7 @@ public class LecturerSchedulerController {
   }
 
   @PostMapping("/create")
+  @PreAuthorize("hasAuthority('C_CREATE')")
   public ResponseEntity<ApiMessageDto<LecturerSchedulerDto>> createLecturerScheduler(@RequestBody
   LecturerSchedulerCreateForm request){
     ApiMessageDto<LecturerSchedulerDto> response = ApiMessageUtils.results("Dang ky thanh cong",
@@ -50,15 +54,17 @@ public class LecturerSchedulerController {
     return ResponseEntity.ok(response);
   }
 
-  @PutMapping("/{id}/update")
-  public ResponseEntity<ApiMessageDto<LecturerSchedulerDto>> updateLecturerScheduler(@PathVariable Long id,
+  @PutMapping("/update")
+  @PreAuthorize("hasAuthority('C_UPDATE')")
+  public ResponseEntity<ApiMessageDto<LecturerSchedulerDto>> updateLecturerScheduler(
       @RequestBody LecturerSchedulerUpdateForm request) {
     ApiMessageDto<LecturerSchedulerDto> response = ApiMessageUtils.results("Cap nhat thanh cong",
-        lecturerSchedulerService.updateLecturerScheduler(id, request));
+        lecturerSchedulerService.updateLecturerScheduler(request));
     return ResponseEntity.ok(response);
   }
 
-  @DeleteMapping("/{id}/delete")
+  @DeleteMapping("/delete/{id}")
+  @PreAuthorize("hasAuthority('C_DELETE')")
   public ResponseEntity<ApiMessageDto<String>> deleteLecturerScheduler(@PathVariable Long id) {
     lecturerSchedulerService.deleteLecturerScheduler(id);
     ApiMessageDto<String> response = ApiMessageUtils.results("Xoa thanh cong", null);

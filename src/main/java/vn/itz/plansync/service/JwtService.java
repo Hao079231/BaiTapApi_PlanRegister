@@ -9,6 +9,7 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,8 +18,13 @@ public class JwtService {
   @NonFinal
   protected String SIGN_KEY;
 
-  public boolean isValid(String token){
-    return !isTokenExpired(token);
+  public String extractUsername(String token){
+    return extractClaim(token, Claims::getSubject);
+  }
+
+  public boolean isValid(String token, UserDetails user){
+    String username = extractUsername(token);
+    return (username.equals(user.getUsername())) && !isTokenExpired(token);
   }
 
   private boolean isTokenExpired(String token) {
@@ -34,14 +40,13 @@ public class JwtService {
     return resolvers.apply(claims);
   }
 
-  public Claims extractAllClaims(String token){
+  private Claims extractAllClaims(String token){
     return Jwts.parserBuilder()
         .setSigningKey(getSigninKey())
         .build()
         .parseClaimsJws(token)
         .getBody();
   }
-
 
   private SecretKey getSigninKey(){
     byte[] keyBytes = Decoders.BASE64URL.decode(SIGN_KEY);

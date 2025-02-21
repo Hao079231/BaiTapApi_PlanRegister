@@ -60,8 +60,8 @@ public class PeriodService {
   }
 
   @Transactional
-  public PeriodDto updatePeriod(Long id, PeriodUpdateForm request) {
-    Period period = periodRepository.findById(id)
+  public PeriodDto updatePeriod(PeriodUpdateForm request) {
+    Period period = periodRepository.findById(request.getPeriodId())
         .orElseThrow(() -> new ResourceNotFound("Hoc ky khong ton tai"));
 
     if (!request.getPeriodDueDate().isAfter(request.getPeriodStartDate())) {
@@ -82,16 +82,7 @@ public class PeriodService {
   }
 
   // Loc va phan trang lay danh sach hoc ky
-  public ShowPagedResults<PeriodDto> getFilteredPeriods(PeriodCriteria request, Pageable pageable, String token) {
-    // Kiem tra token co duoc cung cap khong
-    if (token == null || !token.startsWith("Bearer ")) {
-      throw new ResourceNotFound("Token khong hop le hoac khong duoc cung cap");
-    }
-    token = token.substring(7);
-    if (!jwtService.isValid(token)) {
-      throw new ResourceNotFound("Token khong hop le hoac da het han!");
-    }
-
+  public ShowPagedResults<PeriodDto> getFilteredPeriods(PeriodCriteria request, Pageable pageable) {
     Page<Period> periods = periodRepository.findAll(request.getCriteria(), pageable);
     List<PeriodDto> periodDtos = periodMapper.convertToListPeriodDto(periods.getContent());
     return new ShowPagedResults<>(periodDtos, periods.getTotalElements(), periods.getTotalPages());
