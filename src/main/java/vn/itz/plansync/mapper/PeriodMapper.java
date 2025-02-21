@@ -39,6 +39,7 @@ public interface PeriodMapper {
   List<PeriodDto> convertToListPeriodDto(List<Period> requests);
 
   @Mappings({
+      @Mapping(source = "periodId", target = "id"),
       @Mapping(source = "periodName", target = "name"),
       @Mapping(source = "periodDescription", target = "description"),
       @Mapping(source = "periodStartDate", target = "startDate"),

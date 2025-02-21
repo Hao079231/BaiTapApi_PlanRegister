@@ -26,6 +26,9 @@ public class PeriodService {
   @Autowired
   private PeriodMapper periodMapper;
 
+  @Autowired
+  private JwtService jwtService;
+
   public PeriodDto getPeriodById(Long id) {
     Period period = periodRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFound("Hoc ky khong ton tai"));
@@ -57,8 +60,8 @@ public class PeriodService {
   }
 
   @Transactional
-  public PeriodDto updatePeriod(Long id, PeriodUpdateForm request) {
-    Period period = periodRepository.findById(id)
+  public PeriodDto updatePeriod(PeriodUpdateForm request) {
+    Period period = periodRepository.findById(request.getPeriodId())
         .orElseThrow(() -> new ResourceNotFound("Hoc ky khong ton tai"));
 
     if (!request.getPeriodDueDate().isAfter(request.getPeriodStartDate())) {

@@ -3,12 +3,14 @@ package vn.itz.plansync.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vn.itz.plansync.dto.ApiMessageDto;
@@ -28,6 +30,7 @@ public class PeriodController {
   private PeriodService periodService;
 
   @GetMapping("/list")
+  @PreAuthorize("hasAuthority('C_GET')")
   public ResponseEntity<ApiMessageDto<ShowPagedResults<PeriodDto>>> getPagedPeriods(
       PeriodCriteria request, Pageable pageable
   ){
@@ -36,7 +39,8 @@ public class PeriodController {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("/{id}")
+  @GetMapping("/get/{id}")
+  @PreAuthorize("hasAuthority('C_GET')")
   public ResponseEntity<ApiMessageDto<PeriodDto>> getPeriodById(@PathVariable Long id) {
     ApiMessageDto<PeriodDto> response = ApiMessageUtils.results("Thong tin hoc ky",
         periodService.getPeriodById(id));
@@ -44,21 +48,24 @@ public class PeriodController {
   }
 
   @PostMapping("/create")
+  @PreAuthorize("hasAuthority('C_CREATE')")
   public ResponseEntity<ApiMessageDto<PeriodDto>> createPeriod(@RequestBody PeriodCreateForm request){
     ApiMessageDto<PeriodDto> response = ApiMessageUtils.results("Tao hoc ky moi thanh cong",
         periodService.createPeriod(request));
     return ResponseEntity.ok(response);
   }
 
-  @PutMapping("/{id}/update")
-  public ResponseEntity<ApiMessageDto<PeriodDto>> updatePeriod(@PathVariable Long id,
+  @PutMapping("/update")
+  @PreAuthorize("hasAuthority('C_UPDATE')")
+  public ResponseEntity<ApiMessageDto<PeriodDto>> updatePeriod(
       @RequestBody PeriodUpdateForm request) {
     ApiMessageDto<PeriodDto> response = ApiMessageUtils.results("Cap nhat hoc ky thanh cong",
-        periodService.updatePeriod(id, request));
+        periodService.updatePeriod(request));
     return ResponseEntity.ok(response);
   }
 
-  @DeleteMapping("/{id}/delete")
+  @DeleteMapping("/delete/{id}")
+  @PreAuthorize("hasAuthority('C_DELETE')")
   public ResponseEntity<ApiMessageDto<String>> deletePeriod(@PathVariable Long id) {
     periodService.deletePeriod(id);
     ApiMessageDto<String> response = ApiMessageUtils.results("Xoa hoc ky thanh cong", null);

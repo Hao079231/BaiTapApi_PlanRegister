@@ -36,6 +36,7 @@ public interface LecturerSchedulerMapper {
   List<LecturerSchedulerDto> convertToListLecturerSchedulerDto(List<LecturerScheduler> requests);
 
   @Mappings({
+      @Mapping(source = "lecturerSchedulerIdValue", target = "id"),
       @Mapping(source = "lecturerIdValue", target = "lecturerId"),
       @Mapping(source = "courseIdValue", target = "courseId")
   })

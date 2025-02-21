@@ -49,9 +49,9 @@ public class LecturerSchedulerService {
   }
 
   @Transactional
-  public LecturerSchedulerDto updateLecturerScheduler(Long id, LecturerSchedulerUpdateForm request){
-    LecturerScheduler lecturerScheduler = lecturerSchedulerRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFound("Khong tim thay lich trinh voi ID: " + id));
+  public LecturerSchedulerDto updateLecturerScheduler(LecturerSchedulerUpdateForm request){
+    LecturerScheduler lecturerScheduler = lecturerSchedulerRepository.findById(request.getLecturerSchedulerIdValue())
+        .orElseThrow(() -> new ResourceNotFound("Khong tim thay lich trinh voi ID: " + request.getLecturerSchedulerIdValue()));
     lecturerSchedulerMapper.updateLecturerScheduler(lecturerScheduler, request);
     return lecturerSchedulerMapper.converToLecturerSchedulerDto(lecturerSchedulerRepository.save(lecturerScheduler));
   }
